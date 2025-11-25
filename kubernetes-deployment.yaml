@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-face-recognition-deployment
+  labels:
+    app: mlops-face-recognition
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mlops-face-recognition
+  template:
+    metadata:
+      labels:
+        app: mlops-face-recognition
+    spec:
+      containers:
+        - name: mlops-face-recognition-container
+          image: nitin123k/mlops-major:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlops-face-recognition-service
+spec:
+  selector:
+    app: mlops-face-recognition
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30080

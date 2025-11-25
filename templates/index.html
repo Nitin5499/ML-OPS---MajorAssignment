@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face Recognition - MLOps Assignment</title>
+</head>
+<body>
+    <h1>Face Recognition - MLOps Assignment</h1>
+    <p>Upload a face image to get a predicted class ID.</p>
+
+    <form id="upload-form" action="/predict" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required />
+        <button type="submit">Predict</button>
+    </form>
+
+    <h2>Result</h2>
+    <pre id="result"></pre>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const resultPre = document.getElementById('result');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            resultPre.textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
